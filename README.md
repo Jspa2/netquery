@@ -14,7 +14,7 @@ A search engine and web crawler written in Python.
 
 ## Running
 Install the requirements:
-`$ pip install -r requirements.txt`
+`pip install -r requirements.txt`
 
 Netquery consists of two components - the crawler and the search engine. For the search engine to work properly, you must run the crawler first for a few hours to generate the index. This may require some manual fine-tuning of the constants encoded in `crawler/crawler.py`. 
 
@@ -22,7 +22,7 @@ Additionally, ensure that you have authorisation from your network administrator
 
 The crawler can run at the same time as the search engine.
 
-_To run the search engine:_ `flask run`
+_To run the search engine:_ `python app.py`
 
 _To run the crawler:_ `python crawler/crawler.py`
 
