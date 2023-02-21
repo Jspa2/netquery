@@ -1,0 +1,7 @@
+SQLAlchemy~=2.0.4
+Flask~=2.2.3
+beautifulsoup4~=4.11.2
+nltk~=3.8.1
+yake~=0.4.8
+gensim~=4.3.0
+sumy~=0.11.0

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/search.css">
+    <title>{{ query }} - Netquery</title>
+</head>
+<body>
+    <h1 id="logo">netquery</h1>
+    <form action="/search" method="get" id="search-form">
+        <input type="search" maxlength="100" placeholder="Search" name="q" value="{{ query }}">
+        <input type="submit" value="Search Netquery" id="search-submit">
+    </form>
+    <p>About {{ results_count }} results</p>
+    {% for match in results %}
+        <div class="result">
+            <sub class="result-url">{{ match.url }}</sub>
+            <a class="result-link" href="{{ match.url }}">{{ match.title }}</a>
+            <p class="result-description">{{ match.description }}</p>
+        </div>
+    {% else %}
+        <p>Sorry, we couldn't find any results.</p>
+    {% endfor %}
+</body>
+</html>

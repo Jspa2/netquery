@@ -1,0 +1,32 @@
+body {
+    margin: 4em 8em;
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+}
+
+@media (max-width: 700px) {
+    body {
+        margin: 2em;
+    }
+}
+
+input[type=search] {
+    border-radius: 8px;
+    padding: 0.5em;
+    border: 1px solid gray;
+    background-color: #fff;
+    width: 300px;
+}
+
+input[type=submit] {
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    background-color: #0074d9;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+input:focus-visible {
+    border: 1px solid #0074d9;
+    outline: none;
+}
