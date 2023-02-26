@@ -35,3 +35,14 @@ body {
     margin-top: 6em;
     display: block;
 }
+
+@media (max-width: 700px) {
+    #search-submit, #random-link {
+        display: block;
+    }
+
+    #random-link {
+        margin-left: 0;
+        margin-top: 1em;
+    }
+}
