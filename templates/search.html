@@ -16,7 +16,7 @@
         <input type="search" maxlength="100" placeholder="Search" name="q" value="{{ query }}">
         <input type="submit" value="Search Netquery" id="search-submit">
     </form>
-    <p>About {{ results_count }} results</p>
+    <p>About {{ '{0:,}'.format(results_count) }} results</p>
     {% for match in results %}
         <div class="result">
             <sub class="result-url">{{ match.url }}</sub>
