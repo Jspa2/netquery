@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, abort, redirect
 from search.search import do_search
+from random_link import get_random_link
 
 app = Flask(__name__, static_folder='static', static_url_path='/')
 
@@ -31,6 +32,11 @@ def search():
         results=results,
         results_count=results_count
     )
+
+
+@app.route('/random')
+def random():
+    return redirect(get_random_link().url)
 
 
 if __name__ == '__main__':

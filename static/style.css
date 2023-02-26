@@ -17,7 +17,7 @@ input[type=search] {
     width: 300px;
 }
 
-input[type=submit] {
+input[type=submit], button {
     border-radius: 8px;
     padding: 0.5em 1em;
     background-color: #0074d9;
