@@ -30,3 +30,10 @@ input:focus-visible {
     border: 1px solid #0074d9;
     outline: none;
 }
+
+#logo {
+    font-weight: bold;
+    color: white;
+    font-size: 2em;
+    text-decoration: none;
+}
