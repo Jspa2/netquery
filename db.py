@@ -1,6 +1,7 @@
 import sqlalchemy as db
 from sqlalchemy.orm import declarative_base, sessionmaker, Query, scoped_session
 from datetime import datetime
+from sqlalchemy import text
 import os
 
 DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'crawler/crawler.db'))

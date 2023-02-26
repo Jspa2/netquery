@@ -1,8 +1,5 @@
 import urllib.parse
 from ssl import SSLCertVerificationError
-
-from sqlalchemy import desc
-
 from db import QueueItem, Session, Link, Page, RobotsTxt, RequestLog
 from bs4.element import Comment
 from start_points import start_points
@@ -21,6 +18,7 @@ from description_generator import generate_description, sanitise_description
 from html import unescape
 from sanitiser import sanitise_and_limit
 from keywords import get_keywords
+import tldextract
 import threading
 import traceback
 
@@ -39,6 +37,7 @@ ROBOTS_TXT_USER_AGENT = 'netquery'
 FOCUS = None
 ENGLISH_ONLY = True
 TLD_NO_FOLLOW = ['ru', 'cn', 'ir', 'iq']
+URL_SUBSTRINGS_NO_FOLLOW = ['policies', 'policy', 'terms', 'search']
 HEADERS = {
     'User-Agent': 'netquery-bot/1.0'
 }
@@ -108,8 +107,10 @@ def get_queue_item():
         if queue_item is None:
             raise f'[FOCUS] Could not find any queue items that match your focus!'
     else:
+        look_depth = random.randint(min_queue_depth, max_queue_depth)
+
         queue_item = session.query(QueueItem) \
-            .filter(QueueItem.depth <= random.randint(min_queue_depth, max_queue_depth)) \
+            .filter(QueueItem.depth <= look_depth) \
             .order_by(func.random()) \
             .first()
 
@@ -169,6 +170,8 @@ def sanitise_url(url):
 
         sanitised_url = urlunparse(
             (parsed_url.scheme, parsed_url.netloc, path, parsed_url.params, query_params, fragment))
+
+        sanitised_url = sanitised_url.lower()
 
         return sanitised_url
 
@@ -245,6 +248,11 @@ def get_domain(url):
     domain = parsed_url.netloc
 
     return domain
+
+
+def get_domain_no_subdomain(url):
+    ext = tldextract.extract(url)
+    return f"{ext.domain}.{ext.suffix}"
 
 
 def is_valid_url(url):
@@ -460,9 +468,9 @@ def do_crawl(session):
 
                 for link_url in link_urls:
                     link = Link(url=link_url,
-                                domain=get_domain(link_url),
+                                domain=get_domain_no_subdomain(link_url),
                                 found_at=queue_item.url,
-                                found_at_domain=get_domain(queue_item.url))
+                                found_at_domain=get_domain_no_subdomain(queue_item.url))
                     session.add(link)
 
                 follow_urls = link_urls.copy()
@@ -481,6 +489,9 @@ def do_crawl(session):
                         continue
 
                     if get_tld(follow_domain) in TLD_NO_FOLLOW:
+                        continue
+
+                    if any(substring in follow_url for substring in URL_SUBSTRINGS_NO_FOLLOW):
                         continue
 
                     if session.query(QueueItem) \
