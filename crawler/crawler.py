@@ -550,12 +550,13 @@ def do_crawl(session):
 
 def crawler_thread():
     while True:
+        session = Session()
         try:
-            session = Session()
             do_crawl(session)
-            session.close()
         except PendingRollbackError as e:
+            session.rollback()
             print(f'[PENDING_ROLLBACK_ERROR] {e}')
+        session.close()
 
         time.sleep(DELAY)
 
