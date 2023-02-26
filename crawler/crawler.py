@@ -1,5 +1,6 @@
 import urllib.parse
 from ssl import SSLCertVerificationError
+from sqlalchemy.exc import PendingRollbackError
 from db import QueueItem, Session, Link, Page, RobotsTxt, RequestLog
 from bs4.element import Comment
 from start_points import start_points
@@ -549,9 +550,12 @@ def do_crawl(session):
 
 def crawler_thread():
     while True:
-        session = Session()
-        do_crawl(session)
-        session.close()
+        try:
+            session = Session()
+            do_crawl(session)
+            session.close()
+        except PendingRollbackError as e:
+            print(f'[PENDING_ROLLBACK_ERROR] {e}')
 
         time.sleep(DELAY)
 
